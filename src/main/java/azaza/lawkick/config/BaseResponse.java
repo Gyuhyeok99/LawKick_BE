@@ -1,38 +1,39 @@
 package azaza.lawkick.config;
 
-
+import azaza.lawkick.config.code.BaseCode;
+import azaza.lawkick.config.code.status.SuccessStatus;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import static azaza.lawkick.config.BaseResponseStatus.SUCCESS;
-
 @Getter
 @AllArgsConstructor
 @JsonPropertyOrder({"isSuccess", "code", "message", "result"})
-public class BaseResponse<T> { //BaseResponse 객체를 사용할때 성공, 실패 경우
+public class BaseResponse<T> {
+
     @JsonProperty("isSuccess")
     private final Boolean isSuccess;
+    private final String code;
     private final String message;
-    private final int code;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private T result;
 
-    // 요청에 성공한 경우
-    public BaseResponse(T result) {
-        this.isSuccess = SUCCESS.isSuccess();
-        this.message = SUCCESS.getMessage();
-        this.code = SUCCESS.getCode();
-        this.result = result;
+
+    // 성공한 경우 응답 생성
+
+    public static <T> BaseResponse<T> onSuccess(T result){
+        return new BaseResponse<>(true, SuccessStatus._OK.getCode() , SuccessStatus._OK.getMessage(), result);
     }
 
-    // 요청에 실패한 경우
-    public BaseResponse(BaseResponseStatus status) {
-        this.isSuccess = status.isSuccess();
-        this.message = status.getMessage();
-        this.code = status.getCode();
+    public static <T> BaseResponse<T> of(BaseCode code, T result){
+        return new BaseResponse<>(true, code.getReasonHttpStatus().getCode() , code.getReasonHttpStatus().getMessage(), result);
+    }
+
+
+    // 실패한 경우 응답 생성
+    public static <T> BaseResponse<T> onFailure(String code, String message, T data){
+        return new BaseResponse<>(false, code, message, data);
     }
 }
-
