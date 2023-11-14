@@ -3,10 +3,8 @@ package azaza.lawkick.report.controller;
 import azaza.lawkick.config.BaseResponse;
 import azaza.lawkick.report.service.ReportService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @RestController
@@ -20,5 +18,12 @@ public class ReportController {
     public BaseResponse<Object> exceptionAPI(@RequestParam Integer flag){
         reportService.CheckFlag(flag);
         return BaseResponse.onSuccess(flag);
+    }
+
+    //신고하는 기능
+    //일단 OCR 작동시키는 기능만 넣었는데 이야기좀 해봐야겠네요
+    @PostMapping
+    public BaseResponse<String> report(@RequestPart("file") MultipartFile file) {
+        return BaseResponse.onSuccess(reportService.ocr(file));
     }
 }
