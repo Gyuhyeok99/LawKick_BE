@@ -24,6 +24,8 @@ public class Report extends BaseTimeEntity {
     private KickboardType kickboardType; //킥보드 종류
     private Double latitude; //위도
     private Double longitude; //경도
+    private boolean helmet; // true면 헬멧미착용
+    private boolean multiPerson; // true면 다인탑승
 
     @ManyToOne(fetch = LAZY)
     private Member reporter; //신고자
