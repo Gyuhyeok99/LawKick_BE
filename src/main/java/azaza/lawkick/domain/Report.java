@@ -19,7 +19,7 @@ public class Report extends BaseTimeEntity {
     private Long id;
 
     private String content; //신고 내용
-    private String number; //번호판 번호
+    private String serialNumber; //일련번호
     @Enumerated(EnumType.STRING)
     private KickboardType kickboardType; //킥보드 종류
     private Double latitude; //위도
