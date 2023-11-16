@@ -30,21 +30,21 @@ public class InitData {
         @Transactional
         public void init() {
             Member member1 = Member.builder()
-                    .userId("manager@naver.com")
+                    .email("manager@naver.com")
                     .password("manager123")
                     .nickName("관리자")
                     .mileage(1000L)
                     .build();
 
             Member member2 = Member.builder()
-                    .userId("test1@naver.com")
+                    .email("test1@naver.com")
                     .password("test1")
                     .nickName("테스터1")
                     .mileage(1000L)
                     .build();
 
             Member member3 = Member.builder()
-                    .userId("test2@naver.com")
+                    .email("test2@naver.com")
                     .password("test2")
                     .nickName("테스터2")
                     .mileage(2000L)

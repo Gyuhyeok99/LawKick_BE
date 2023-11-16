@@ -22,6 +22,7 @@ public class Report extends BaseTimeEntity {
     private String serialNumber; //일련번호
     @Enumerated(EnumType.STRING)
     private KickboardType kickboardType; //킥보드 종류
+    private String imageUrl; //이미지 url
     private Double latitude; //위도
     private Double longitude; //경도
     private boolean helmet; // true면 헬멧미착용
@@ -29,4 +30,6 @@ public class Report extends BaseTimeEntity {
 
     @ManyToOne(fetch = LAZY)
     private Member reporter; //신고자
+
+
 }

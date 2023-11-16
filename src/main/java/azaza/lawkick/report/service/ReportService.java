@@ -1,7 +1,10 @@
 package azaza.lawkick.report.service;
 
 import azaza.lawkick.config.code.status.ErrorStatus;
+import azaza.lawkick.config.exception.handler.ReportHandler;
 import azaza.lawkick.config.exception.handler.TempHandler;
+import azaza.lawkick.domain.Report;
+import azaza.lawkick.report.dto.ReportRes;
 import azaza.lawkick.report.repository.ReportRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,17 +15,14 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
+import static azaza.lawkick.config.code.status.ErrorStatus.*;
+
 @RequiredArgsConstructor
 @Service
 @Slf4j
 public class ReportService {
 
     private final ReportRepository reportRepository;
-
-    public void CheckFlag(Integer flag) {
-        if (flag == 1)
-            throw new TempHandler(ErrorStatus.TEMP_EXCEPTION);
-    }
 
     public String ocr(MultipartFile file) {
         RestTemplate restTemplate = new RestTemplate();
@@ -38,6 +38,12 @@ public class ReportService {
                 "http://127.0.0.1:5000/api/ocr", HttpMethod.POST, requestEntity, String.class);
         log.info("Flask 서버 API 호출 성공 {}", response.getBody());
         return response.getBody();
+    }
+
+    public ReportRes reportPage(Long reportId) {
+        Report findReport = reportRepository.findById(reportId)
+                .orElseThrow(() -> new ReportHandler(INVALID_REPORT_ID));
+        return new ReportRes(findReport);
     }
 
 
