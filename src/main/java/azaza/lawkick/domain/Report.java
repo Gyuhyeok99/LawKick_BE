@@ -19,12 +19,17 @@ public class Report extends BaseTimeEntity {
     private Long id;
 
     private String content; //신고 내용
-    private String number; //번호판 번호
+    private String serialNumber; //일련번호
     @Enumerated(EnumType.STRING)
     private KickboardType kickboardType; //킥보드 종류
+    private String imageUrl; //이미지 url
     private Double latitude; //위도
     private Double longitude; //경도
+    private boolean helmet; // true면 헬멧미착용
+    private boolean multiPerson; // true면 다인탑승
 
     @ManyToOne(fetch = LAZY)
     private Member reporter; //신고자
+
+
 }

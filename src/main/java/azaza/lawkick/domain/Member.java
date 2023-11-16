@@ -17,7 +17,7 @@ public class Member extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String userId;
+    private String email;
     private String password;
     private String nickName;
     private Long mileage;
