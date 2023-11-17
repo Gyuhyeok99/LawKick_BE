@@ -39,3 +39,14 @@ springdoc:
   default-produces-media-type: application/json
   paths-to-match:
     - /api/**
+cloud:
+  aws:
+    s3:
+      bucket: lawkick
+    stack:
+      auto: false
+    region:
+      static: ap-northeast-2
+    credentials:
+      access-key: ${S3_ACCESSKEY}
+      secret-key: ${S3_SECRETKEY}
