@@ -43,7 +43,16 @@ public class AdminService {
         log.info("최종 신고 완료로 마일리지 적립 {}", findReport.getReportStatus());
         //마일리지 적립 기능 추가해야함
         return new JudgeRes(reportId);
+    }
 
+    @Transactional
+    public JudgeRes reportFalse(Long reportId) {
+        Report findReport = reportRepository.findById(reportId)
+                .orElseThrow(() -> new ReportHandler(INVALID_REPORT_ID));
+        findReport.updateReportFalse();
+        log.info("허위 신고로 판명 {}", findReport.getReportStatus());
+        //마일리지 적립 기능 추가해야함
+        return new JudgeRes(reportId);
     }
 
 }

@@ -73,4 +73,7 @@ public class Report extends BaseTimeEntity {
     public void updateReportTrue() {
         this.reportStatus = ReportStatus.TRUE;
     }
+    public void updateReportFalse() {
+        this.reportStatus = ReportStatus.FALSE;
+    }
 }

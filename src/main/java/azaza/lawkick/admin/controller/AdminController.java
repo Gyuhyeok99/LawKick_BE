@@ -25,4 +25,8 @@ public class AdminController {
     public BaseResponse<JudgeRes> reportTrue(@PathVariable Long reportId) {
         return BaseResponse.onSuccess(adminService.reportTrue(reportId));
     }
+    @PatchMapping("/{reportId}/false")
+    public BaseResponse<JudgeRes> reportFalse(@PathVariable Long reportId) {
+        return BaseResponse.onSuccess(adminService.reportFalse(reportId));
+    }
 }
