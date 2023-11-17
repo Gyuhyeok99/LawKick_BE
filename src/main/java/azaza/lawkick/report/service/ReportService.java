@@ -28,6 +28,8 @@ public class ReportService {
     private final ReportRepository reportRepository;
     private final MemberRepository memberRepository;
 
+    private String localurl = "http://127.0.0.1:5000/api/ocr";
+    private String flaskurl = "http://3.36.198.248:5000/api/ocr";
     @Transactional
     public CaptureRes save(ReportReq reportReq) {
         //멤버 하드코딩 ㅎㅎ.. 그냥 1번을 사용자로 하죠
@@ -50,7 +52,7 @@ public class ReportService {
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
         log.info("Flask 서버 API 호출");
         ResponseEntity<String> response = restTemplate.exchange(
-                "http://127.0.0.1:5000/api/ocr", HttpMethod.POST, requestEntity, String.class);
+                flaskurl, HttpMethod.POST, requestEntity, String.class);
         log.info("Flask 서버 API 호출 성공 {}", response.getBody());
         return response.getBody();
     }
