@@ -52,7 +52,7 @@ public class ReportService {
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
         log.info("Flask 서버 API 호출");
         ResponseEntity<String> response = restTemplate.exchange(
-                flaskurl, HttpMethod.POST, requestEntity, String.class);
+                localurl, HttpMethod.POST, requestEntity, String.class);
         log.info("Flask 서버 API 호출 성공 {}", response.getBody());
         return response.getBody();
     }
