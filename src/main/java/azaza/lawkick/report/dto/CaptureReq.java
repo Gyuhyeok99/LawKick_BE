@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 @Data
 public class CaptureReq {
 
-    private MultipartFile image;
     private KickboardType kickboardType;
     private String serialNumber;
 

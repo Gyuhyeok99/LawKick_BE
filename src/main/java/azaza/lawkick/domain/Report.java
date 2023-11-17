@@ -31,9 +31,18 @@ public class Report extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private ReportStatus reportStatus; //신고 상태 - 작성중, 제출, 허위신고, 최종신고
 
-
     @ManyToOne(fetch = LAZY)
     private Member reporter; //신고자
 
+    public Report(String serialNumber, KickboardType kickboardType, String imageUrl, Member reporter) {
+        this.serialNumber = serialNumber;
+        this.kickboardType = kickboardType;
+        this.imageUrl = imageUrl;
+        this.reporter = reporter;
+        this.reportStatus = getDefaultStatus();
+    }
 
+    private ReportStatus getDefaultStatus() {
+        return ReportStatus.WRITING;
+    }
 }
