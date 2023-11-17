@@ -1,11 +1,7 @@
 package azaza.lawkick.report.controller;
 
 import azaza.lawkick.config.BaseResponse;
-import azaza.lawkick.domain.enums.KickboardType;
-import azaza.lawkick.report.dto.CaptureReq;
-import azaza.lawkick.report.dto.CaptureRes;
-import azaza.lawkick.report.dto.ReportReq;
-import azaza.lawkick.report.dto.ReportRes;
+import azaza.lawkick.report.dto.*;
 import azaza.lawkick.report.service.ReportService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,8 +38,8 @@ public class ReportController {
         return BaseResponse.onSuccess(reportService.reportPage(reportId));
     }
 
-//    @PostMapping
-//    public BaseResponse<Long> submitReport() {
-//
-//    }
+    @PostMapping("{reportId}/submit")
+    public BaseResponse<SubmitRes> submitReport(@RequestBody SubmitReq submitReq, @PathVariable Long reportId) {
+        return BaseResponse.onSuccess(reportService.update(submitReq, reportId));
+    }
 }

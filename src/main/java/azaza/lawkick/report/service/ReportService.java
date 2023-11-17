@@ -7,9 +7,7 @@ import azaza.lawkick.config.exception.handler.TempHandler;
 import azaza.lawkick.domain.Member;
 import azaza.lawkick.domain.Report;
 import azaza.lawkick.member.repository.MemberRepository;
-import azaza.lawkick.report.dto.CaptureRes;
-import azaza.lawkick.report.dto.ReportReq;
-import azaza.lawkick.report.dto.ReportRes;
+import azaza.lawkick.report.dto.*;
 import azaza.lawkick.report.repository.ReportRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,11 +30,14 @@ public class ReportService {
     private final ReportRepository reportRepository;
     private final MemberRepository memberRepository;
 
+    @Transactional
     public CaptureRes save(ReportReq reportReq) {
         //멤버 하드코딩 ㅎㅎ.. 그냥 1번을 사용자로 하죠
         Member findMember = memberRepository.findById(1L)
                 .orElseThrow(() -> new MemberHandler(MEMBER_NOT_FOUND));
+        log.info("{} member 조회", findMember.getId());
         Report report = reportRepository.save(new Report(reportReq.getSerialNumber(), reportReq.getKickboardType(), reportReq.getImageUrl(), findMember));
+        log.info("{} report 저장", report.getId());
         return new CaptureRes(report.getId(), report.getImageUrl());
     }
 
@@ -59,7 +60,19 @@ public class ReportService {
     public ReportRes reportPage(Long reportId) {
         Report findReport = reportRepository.findById(reportId)
                 .orElseThrow(() -> new ReportHandler(INVALID_REPORT_ID));
+        log.info("{} report 조회 성공", findReport.getId());
         return new ReportRes(findReport);
+    }
+
+    @Transactional
+    public SubmitRes update(SubmitReq submitReq, Long reportId) {
+        Report findReport = reportRepository.findById(reportId)
+                .orElseThrow(() -> new ReportHandler(INVALID_REPORT_ID));
+        log.info("{} report 조회 성공", findReport.getId());
+        findReport.updateReport(submitReq.getKickboardType(), submitReq.getSerialNumber(),
+                submitReq.getLatitude(), submitReq.getLatitude(), submitReq.getHelmet(), submitReq.getMultiPerson(), submitReq.getContent());
+        log.info("{} report 업데이트", findReport.getId());
+        return new SubmitRes(findReport.getId());
     }
 
 
