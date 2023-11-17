@@ -1,9 +1,7 @@
 package azaza.lawkick.report.service;
 
-import azaza.lawkick.config.code.status.ErrorStatus;
 import azaza.lawkick.config.exception.handler.MemberHandler;
 import azaza.lawkick.config.exception.handler.ReportHandler;
-import azaza.lawkick.config.exception.handler.TempHandler;
 import azaza.lawkick.domain.Member;
 import azaza.lawkick.domain.Report;
 import azaza.lawkick.member.repository.MemberRepository;

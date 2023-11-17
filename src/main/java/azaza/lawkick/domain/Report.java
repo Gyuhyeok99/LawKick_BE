@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 
 import static jakarta.persistence.FetchType.LAZY;
 
@@ -26,7 +27,9 @@ public class Report extends BaseTimeEntity {
     private String imageUrl; //이미지 url
     private Double latitude; //위도
     private Double longitude; //경도
+    @Nullable
     private Boolean helmet; // true면 헬멧미착용
+    @Nullable
     private Boolean multiPerson; // true면 다인탑승
     @Enumerated(EnumType.STRING)
     private ReportStatus reportStatus; //신고 상태 - 작성중, 제출, 허위신고, 최종신고
@@ -40,6 +43,8 @@ public class Report extends BaseTimeEntity {
         this.imageUrl = imageUrl;
         this.reporter = reporter;
         this.reportStatus = getDefaultStatus();
+        this.helmet = Boolean.FALSE;
+        this.multiPerson = Boolean.FALSE;
     }
 
 
