@@ -4,6 +4,7 @@ import azaza.lawkick.config.code.status.ErrorStatus;
 import azaza.lawkick.config.exception.handler.ReportHandler;
 import azaza.lawkick.config.exception.handler.TempHandler;
 import azaza.lawkick.domain.Report;
+import azaza.lawkick.report.dto.ReportReq;
 import azaza.lawkick.report.dto.ReportRes;
 import azaza.lawkick.report.repository.ReportRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,11 @@ import static azaza.lawkick.config.code.status.ErrorStatus.*;
 public class ReportService {
 
     private final ReportRepository reportRepository;
+
+    public String save(ReportReq reportReq) {
+
+        return "OK";
+    }
 
     public String ocr(MultipartFile file) {
         RestTemplate restTemplate = new RestTemplate();
