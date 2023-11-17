@@ -1,12 +1,11 @@
 package azaza.lawkick.admin.controller;
 
 import azaza.lawkick.admin.dto.AdminRes;
+import azaza.lawkick.admin.dto.JudgeRes;
 import azaza.lawkick.admin.service.AdminService;
 import azaza.lawkick.config.BaseResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,5 +19,10 @@ public class AdminController {
     @GetMapping
     public BaseResponse<List<AdminRes>> findALlByCreateDateDesc() {
         return BaseResponse.onSuccess(adminService.findALlReportbyAdmin());
+    }
+
+    @PatchMapping("/{reportId}/true")
+    public BaseResponse<JudgeRes> reportTrue(@PathVariable Long reportId) {
+        return BaseResponse.onSuccess(adminService.reportTrue(reportId));
     }
 }

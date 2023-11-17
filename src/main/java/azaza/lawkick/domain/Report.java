@@ -69,4 +69,8 @@ public class Report extends BaseTimeEntity {
     private ReportStatus getSubmitStatus() {
         return ReportStatus.SUBMIT;
     }
+
+    public void updateReportTrue() {
+        this.reportStatus = ReportStatus.TRUE;
+    }
 }
