@@ -3,9 +3,12 @@ package azaza.lawkick.admin.service;
 
 import azaza.lawkick.admin.dto.AdminRes;
 import azaza.lawkick.admin.dto.JudgeRes;
+import azaza.lawkick.config.exception.handler.MemberHandler;
 import azaza.lawkick.config.exception.handler.ReportHandler;
+import azaza.lawkick.domain.Member;
 import azaza.lawkick.domain.Report;
 import azaza.lawkick.domain.enums.ReportStatus;
+import azaza.lawkick.member.repository.MemberRepository;
 import azaza.lawkick.report.repository.ReportRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,8 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import static azaza.lawkick.config.code.status.ErrorStatus.INVALID_REPORT_ID;
+import static azaza.lawkick.config.code.status.ErrorStatus.MEMBER_NOT_FOUND;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -24,6 +27,7 @@ import static azaza.lawkick.config.code.status.ErrorStatus.INVALID_REPORT_ID;
 public class AdminService {
 
     private final ReportRepository reportRepository;
+    private final MemberRepository memberRepository;
 
     //관리자 페이지에서 최신순으로 신고 리스트 전체 조회
     public List<AdminRes> findALlReportbyAdmin() {
@@ -40,8 +44,12 @@ public class AdminService {
         Report findReport = reportRepository.findById(reportId)
                 .orElseThrow(() -> new ReportHandler(INVALID_REPORT_ID));
         findReport.updateReportTrue();
-        log.info("최종 신고 완료로 마일리지 적립 {}", findReport.getReportStatus());
         //마일리지 적립 기능 추가해야함
+        Member reporter = memberRepository.findById(findReport.getReporter().getId())
+                .orElseThrow(() -> new MemberHandler(MEMBER_NOT_FOUND));
+        Long mileage = reporter.getMileage();
+        Long updateMilege =  reporter.updateMileage();
+        log.info("최종 신고 완료로 마일리지 적립 {} {} -> {}", findReport.getReportStatus(), mileage, updateMilege);
         return new JudgeRes(reportId);
     }
 
