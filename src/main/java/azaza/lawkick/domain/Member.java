@@ -1,5 +1,6 @@
 package azaza.lawkick.domain;
 
+import azaza.lawkick.domain.enums.ReportStatus;
 import azaza.lawkick.utils.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -22,4 +23,9 @@ public class Member extends BaseTimeEntity {
     private String nickName;
     private Long mileage;
 
+
+    public Long updateMileage() {
+        this.mileage += 10;
+        return this.mileage;
+    }
 }
