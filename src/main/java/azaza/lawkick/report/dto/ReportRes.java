@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Data
 public class ReportRes {
 
@@ -19,6 +18,7 @@ public class ReportRes {
     private String imageUrl;
 
     public ReportRes(Report report) {
+        this.reportId = report.getId();
         this.serialNumber = report.getSerialNumber();
         this.kickboardType = report.getKickboardType();
         this.imageUrl = report.getImageUrl();
