@@ -1,6 +1,7 @@
 package azaza.lawkick.domain;
 
 import azaza.lawkick.domain.enums.KickboardType;
+import azaza.lawkick.domain.enums.ReportStatus;
 import azaza.lawkick.utils.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -27,9 +28,21 @@ public class Report extends BaseTimeEntity {
     private Double longitude; //경도
     private boolean helmet; // true면 헬멧미착용
     private boolean multiPerson; // true면 다인탑승
+    @Enumerated(EnumType.STRING)
+    private ReportStatus reportStatus; //신고 상태 - 작성중, 제출, 허위신고, 최종신고
 
     @ManyToOne(fetch = LAZY)
     private Member reporter; //신고자
 
+    public Report(String serialNumber, KickboardType kickboardType, String imageUrl, Member reporter) {
+        this.serialNumber = serialNumber;
+        this.kickboardType = kickboardType;
+        this.imageUrl = imageUrl;
+        this.reporter = reporter;
+        this.reportStatus = getDefaultStatus();
+    }
 
+    private ReportStatus getDefaultStatus() {
+        return ReportStatus.WRITING;
+    }
 }
