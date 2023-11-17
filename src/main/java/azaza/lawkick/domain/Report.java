@@ -1,6 +1,7 @@
 package azaza.lawkick.domain;
 
 import azaza.lawkick.domain.enums.KickboardType;
+import azaza.lawkick.domain.enums.ReportStatus;
 import azaza.lawkick.utils.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -19,12 +20,48 @@ public class Report extends BaseTimeEntity {
     private Long id;
 
     private String content; //신고 내용
-    private String number; //번호판 번호
+    private String serialNumber; //일련번호
     @Enumerated(EnumType.STRING)
     private KickboardType kickboardType; //킥보드 종류
+    private String imageUrl; //이미지 url
     private Double latitude; //위도
     private Double longitude; //경도
+    private Boolean helmet; // true면 헬멧미착용
+    private Boolean multiPerson; // true면 다인탑승
+    @Enumerated(EnumType.STRING)
+    private ReportStatus reportStatus; //신고 상태 - 작성중, 제출, 허위신고, 최종신고
 
     @ManyToOne(fetch = LAZY)
     private Member reporter; //신고자
+
+    public Report(String serialNumber, KickboardType kickboardType, String imageUrl, Member reporter) {
+        this.serialNumber = serialNumber;
+        this.kickboardType = kickboardType;
+        this.imageUrl = imageUrl;
+        this.reporter = reporter;
+        this.reportStatus = getDefaultStatus();
+    }
+
+
+
+    public Report updateReport(KickboardType kickboardType, String serialNumber, Double latitude,
+                               Double longitude, Boolean helmet, Boolean multiPerson, String content) {
+        this.kickboardType = kickboardType;
+        this.serialNumber = serialNumber;
+        this.latitude = latitude;
+        this. longitude = longitude;
+        this.helmet = helmet;
+        this.multiPerson = multiPerson;
+        this.reportStatus = getSubmitStatus();
+        this.content = content;
+        return this;
+    }
+
+    private ReportStatus getDefaultStatus() {
+        return ReportStatus.WRITING;
+    }
+
+    private ReportStatus getSubmitStatus() {
+        return ReportStatus.SUBMIT;
+    }
 }
