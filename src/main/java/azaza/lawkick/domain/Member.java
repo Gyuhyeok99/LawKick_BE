@@ -21,7 +21,4 @@ public class Member extends BaseTimeEntity {
     private String password;
     private String nickName;
     private Long mileage;
-
-    @OneToMany(mappedBy = "reporter", cascade = CascadeType.ALL)
-    private List<Report> reports = new ArrayList<>();
 }
