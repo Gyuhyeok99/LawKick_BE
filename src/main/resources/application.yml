@@ -48,5 +48,5 @@ cloud:
     region:
       static: ap-northeast-2
     credentials:
-      access-key: ${S3_ACCESSKEY}
-      secret-key: ${S3_SECRETKEY}
+      accessKey: ${S3_ACCESSKEY} //환경변수 설정 필요
+      secretKey: ${S3_SECRETKEY}
