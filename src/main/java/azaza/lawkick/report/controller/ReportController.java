@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/api/report")
 @Slf4j
+@CrossOrigin
 public class ReportController {
 
     private final ReportService reportService;
