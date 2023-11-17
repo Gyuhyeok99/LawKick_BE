@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+
 @Getter
 @AllArgsConstructor
 public enum ErrorStatus implements BaseErrorCode {
@@ -27,9 +29,8 @@ public enum ErrorStatus implements BaseErrorCode {
     // Ror test
     TEMP_EXCEPTION(HttpStatus.BAD_REQUEST, "TEMP4001", "이거는 테스트"),
 
-    // FoodCategory Error
-    FOOD_CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "FOOD_CATEGORY4001", "음식 카테고리가 없습니다.");
-
+    INVALID_REPORT_ID(BAD_REQUEST, "REPROT4001","유효하지 않은 신고 조회입니다"),
+    ;
     private final HttpStatus httpStatus;
     private final String code;
     private final String message;
