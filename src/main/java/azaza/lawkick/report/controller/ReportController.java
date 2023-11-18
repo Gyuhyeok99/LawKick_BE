@@ -24,8 +24,7 @@ public class ReportController {
     //신고하는 기능
     //일단 OCR 작동시키는 기능만 넣었는데 이야기좀 해봐야겠네요
     @PostMapping
-    public BaseResponse<CaptureRes> capture(@RequestPart("captureReq") CaptureReq captureReq,
-                                            @RequestPart("image") MultipartFile image) throws IOException {
+    public BaseResponse<CaptureRes> capture(@RequestPart("image") MultipartFile image) throws IOException {
         log.info("capture api 호출");
         //s3 저장하는 기능 추가
         String imageUrl = s3Uploader.fileUpload(image, "reportImage/");//일단 저장했다고 쳤습니다
