@@ -37,9 +37,8 @@ public class Report extends BaseTimeEntity {
     @ManyToOne(fetch = LAZY)
     private Member reporter; //신고자
 
-    public Report(String serialNumber, KickboardType kickboardType, String imageUrl, Member reporter) {
+    public Report(String serialNumber, String imageUrl, Member reporter) {
         this.serialNumber = serialNumber;
-        this.kickboardType = kickboardType;
         this.imageUrl = imageUrl;
         this.reporter = reporter;
         this.reportStatus = getDefaultStatus();
@@ -75,5 +74,10 @@ public class Report extends BaseTimeEntity {
     }
     public void updateReportFalse() {
         this.reportStatus = ReportStatus.FALSE;
+    }
+
+    public void updateMarker(KickboardType kickboardType, String serialNumber) {
+        this.kickboardType = kickboardType;
+        this.serialNumber = serialNumber;
     }
 }

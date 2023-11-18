@@ -36,7 +36,7 @@ public class ReportService {
         Member findMember = memberRepository.findById(1L)
                 .orElseThrow(() -> new MemberHandler(MEMBER_NOT_FOUND));
         log.info("{} member 조회", findMember.getId());
-        Report report = reportRepository.save(new Report(reportReq.getSerialNumber(), reportReq.getKickboardType(), reportReq.getImageUrl(), findMember));
+        Report report = reportRepository.save(new Report(reportReq.getSerialNumber(), reportReq.getImageUrl(), findMember));
         log.info("{} report 저장", report.getId());
         return new CaptureRes(report.getId(), report.getImageUrl());
     }
@@ -55,6 +55,15 @@ public class ReportService {
                 flaskurl, HttpMethod.POST, requestEntity, String.class);
         log.info("Flask 서버 API 호출 성공 {}", response.getBody());
         return response.getBody();
+    }
+
+    @Transactional
+    public SubmitRes marker(CaptureReq captureReq, Long reportId) {
+        Report findReport = reportRepository.findById(reportId)
+                .orElseThrow(() -> new ReportHandler(INVALID_REPORT_ID));
+        findReport.updateMarker(captureReq.getKickboardType(), captureReq.getSerialNumber());
+        log.info("킥보드 타입과 시리얼 넘버 업데이트 완료");
+        return new SubmitRes(findReport.getId());
     }
 
     public ReportRes reportPage(Long reportId) {
