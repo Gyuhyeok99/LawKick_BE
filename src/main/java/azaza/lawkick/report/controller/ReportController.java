@@ -1,12 +1,16 @@
 package azaza.lawkick.report.controller;
 
 import azaza.lawkick.config.BaseResponse;
+import azaza.lawkick.config.s3.S3Uploader;
 import azaza.lawkick.report.dto.*;
 import azaza.lawkick.report.service.ReportService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.logging.FileHandler;
 
 @RequiredArgsConstructor
 @RestController
@@ -16,17 +20,18 @@ import org.springframework.web.multipart.MultipartFile;
 public class ReportController {
 
     private final ReportService reportService;
+    private final S3Uploader s3Uploader;
 
     //신고하는 기능
     //일단 OCR 작동시키는 기능만 넣었는데 이야기좀 해봐야겠네요
     @PostMapping
     public BaseResponse<CaptureRes> capture(@RequestPart("captureReq") CaptureReq captureReq,
-                                            @RequestParam("image") MultipartFile image
-                                                ) {
+                                            @RequestParam("image") MultipartFile image) throws IOException {
         log.info("capture api 호출");
         //s3 저장하는 기능 추가
 
-        String imageUrl = "http~~.jpg";//일단 저장했다고 쳤습니다
+        String imageUrl = s3Uploader.fileUpload(image, "reportImage/");//일단 저장했다고 쳤습니다
+
         //마커를 안찍었을 때만 ocr 돌리면 되지 않을까요?
         String serialNumber = captureReq.getSerialNumber();
         if(serialNumber == null || serialNumber.isEmpty())
