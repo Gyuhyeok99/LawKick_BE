@@ -15,9 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.multipart.MultipartFile;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 import static azaza.lawkick.config.code.status.ErrorStatus.*;
+import static java.net.URLDecoder.decode;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -41,19 +43,30 @@ public class ReportService {
         return new CaptureRes(report.getId(), report.getImageUrl());
     }
 
-    public String ocr(MultipartFile file) {
+    public String ocr(String imageUrl) {
+        // URL 디코딩
+        String decodedUrl = null;
+        try {
+            decodedUrl = URLDecoder.decode(imageUrl, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        headers.setContentType(MediaType.APPLICATION_JSON);
 
-        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        body.add("file", file.getResource());
+        // 요청 데이터 생성
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        body.add("imageUrl", decodedUrl);
 
-        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
-        log.info("Flask 서버 API 호출");
+        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(body, headers);
+
+        // Flask 서버 API 호출
+        String flaskUrl = "http://localhost:5000/api/ocr";  // Flask 서버 URL
         ResponseEntity<String> response = restTemplate.exchange(
-                flaskurl, HttpMethod.POST, requestEntity, String.class);
-        log.info("Flask 서버 API 호출 성공 {}", response.getBody());
+                flaskUrl, HttpMethod.POST, requestEntity, String.class);
+
         return response.getBody();
     }
 
