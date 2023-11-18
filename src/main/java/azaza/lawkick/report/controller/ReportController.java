@@ -28,14 +28,14 @@ public class ReportController {
                                             @RequestPart("image") MultipartFile image) throws IOException {
         log.info("capture api 호출");
         //s3 저장하는 기능 추가
-
         String imageUrl = s3Uploader.fileUpload(image, "reportImage/");//일단 저장했다고 쳤습니다
+        String serialNumber = reportService.ocr(image);
+        return BaseResponse.onSuccess(reportService.save(new ReportReq(serialNumber, imageUrl))); //응답값 뭐로할지 통일을 안해서 일단 그냥 OK로 해놓았어요
+    }
 
-        //마커를 안찍었을 때만 ocr 돌리면 되지 않을까요?
-        String serialNumber = captureReq.getSerialNumber();
-        if(serialNumber == null || serialNumber.isEmpty())
-            serialNumber = reportService.ocr(image);
-        return BaseResponse.onSuccess(reportService.save(new ReportReq(serialNumber, captureReq.getKickboardType(), imageUrl))); //응답값 뭐로할지 통일을 안해서 일단 그냥 OK로 해놓았어요
+    @PostMapping("/{reportId}")
+    public BaseResponse<SubmitRes> marker(@RequestBody CaptureReq captureReq, @PathVariable Long reportId)   {
+        return BaseResponse.onSuccess(reportService.marker(captureReq, reportId));
     }
 
     @GetMapping("{reportId}")
