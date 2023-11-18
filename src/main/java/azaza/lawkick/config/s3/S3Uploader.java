@@ -1,5 +1,6 @@
 package azaza.lawkick.config.s3;
 
+import azaza.lawkick.config.exception.handler.FileHandler;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
@@ -19,6 +20,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
+import static azaza.lawkick.config.code.status.ErrorStatus.MULTIPARTFILE_TO_FILE_ERROR;
+
 @Slf4j
 @Service
 @Component
@@ -32,7 +35,7 @@ public class S3Uploader {
     //MultiFile 형태의 파일을 File 형태로 전환 후 S3 저장
     public String fileUpload(MultipartFile multipartFile, String dirName) throws IOException {
         File uploadFile = convert(multipartFile)
-                .orElseThrow(() -> new IllegalArgumentException("MultipartFile->File 전환 실패"));
+                .orElseThrow(() -> new FileHandler(MULTIPARTFILE_TO_FILE_ERROR));
         return upload(uploadFile,dirName);
     }
 
@@ -93,6 +96,7 @@ public class S3Uploader {
         } catch (AmazonS3Exception e){
             e.printStackTrace();
             log.info("기존 파일 삭제에 실패했습니다.");
+
         }
     }
 }
