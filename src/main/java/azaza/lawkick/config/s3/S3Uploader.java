@@ -67,6 +67,7 @@ public class S3Uploader {
         File convertFile = new File(System.getProperty("user.dir") + "/" + UUID.randomUUID() + file.getOriginalFilename());
         if(convertFile.createNewFile()){
             try (FileOutputStream fos = new FileOutputStream(convertFile)){
+
                 fos.write(file.getBytes());
             }
             return Optional.of(convertFile);
