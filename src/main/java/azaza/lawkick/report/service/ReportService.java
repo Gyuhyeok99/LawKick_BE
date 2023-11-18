@@ -61,12 +61,10 @@ public class ReportService {
         body.add("imageUrl", decodedUrl);
 
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(body, headers);
-
+        log.info("플라스크 서버 호출");
         // Flask 서버 API 호출
-        String flaskUrl = "http://localhost:5000/api/ocr";  // Flask 서버 URL
         ResponseEntity<String> response = restTemplate.exchange(
-                flaskUrl, HttpMethod.POST, requestEntity, String.class);
-
+                flaskurl, HttpMethod.POST, requestEntity, String.class);
         return response.getBody();
     }
 
