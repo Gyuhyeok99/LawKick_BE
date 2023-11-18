@@ -38,7 +38,7 @@ public class S3Uploader {
 
     //변환된 파일 업로드
     private String upload(File uploadFile, String dirName){
-        String fileName = dirName + "/" + UUID.randomUUID() + "-" +uploadFile.getName(); //UUID 고유 식별자 추가
+        String fileName = dirName + "/" +uploadFile.getName(); //UUID 고유 식별자 추가
         String uploadImageUrl = putS3(uploadFile, fileName);
         removeNewFile(uploadFile);
         return uploadImageUrl;
@@ -64,7 +64,7 @@ public class S3Uploader {
 
     //파일 형식 전환
     private Optional<File> convert(MultipartFile file) throws IOException{
-        File convertFile = new File(System.getProperty("user.dir") + "/" + UUID.randomUUID());
+        File convertFile = new File(System.getProperty("user.dir") + "/" + UUID.randomUUID() + file.getOriginalFilename());
         if(convertFile.createNewFile()){
             try (FileOutputStream fos = new FileOutputStream(convertFile)){
                 fos.write(file.getBytes());
@@ -79,6 +79,11 @@ public class S3Uploader {
         return amazonS3Client.getUrl(bucket, path).toString();
     }
 
+    //파일의 S3 내부 진짜 경로로 변경
+    public String changeFileKeyPath(String fileName){
+        String fileKey = fileName.replace(String.format("https://%s.s3.%s.amazonaws.com/", bucket, amazonS3Client.getRegion()),"");
+        return fileKey;
+    }
     //파일 삭제
     public void deleteFile(String fileName){
         try{
