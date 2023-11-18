@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.logging.FileHandler;
 
 @RequiredArgsConstructor
 @RestController
@@ -26,7 +25,7 @@ public class ReportController {
     //일단 OCR 작동시키는 기능만 넣었는데 이야기좀 해봐야겠네요
     @PostMapping
     public BaseResponse<CaptureRes> capture(@RequestPart("captureReq") CaptureReq captureReq,
-                                            @RequestParam("image") MultipartFile image) throws IOException {
+                                            @RequestPart("image") MultipartFile image) throws IOException {
         log.info("capture api 호출");
         //s3 저장하는 기능 추가
 
