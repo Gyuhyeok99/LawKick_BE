@@ -13,6 +13,5 @@ import lombok.NoArgsConstructor;
 public class ReportReq {
 
     private String serialNumber;
-    private KickboardType kickboardType;
     private String imageUrl;
 }
