@@ -12,6 +12,7 @@ public enum KickboardType implements EnumModel{
     ,KICKGOING("킥고잉")
     ,DEER("디어")
     ,SWING("스윙")
+    ,LAWKICK("로우킥")
     ;
 
     private final String value;
